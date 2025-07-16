@@ -1,5 +1,5 @@
 {% set name = "kopf" %}
-{% set version = "1.36.0" %}
+{% set version = "1.38.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,28 +7,36 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b618c0cd19398681dd4a0a263a0a265b5267a05064a5d0c69025d0ed710bd0af
+  sha256: 7b9f83240269636e00e4b11e9c7c8afbfefba3d3326ac2d2aa7904d35c4f89cd
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  skip: true  # [py<39]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  entry_points:
+    - kopf=kopf.cli:main
 
 requirements:
   host:
-    - python >=3.7
+    - python
     - pip
     - setuptools-scm
+    - wheel
   run:
-    - python >=3.7
-    - typing_extensions
+    - python
     - python-json-logger
     - iso8601
     - click
-    - aiohttp <4.0.0
+    - aiohttp  # [py<312]
+    - aiohttp >=3.9.0  # [py>=312]
     - pyyaml
-    - pykube-ng
-    - kubernetes
+  run_constrained:
+    # extra: full-auth
+    # - pykube-ng
+    # - kubernetes
+    # extra: uvloop
+    # - uvloop  # [py<312]
+    - uvloop >=0.18.0  # [py>312]
 
 test:
   imports:
@@ -37,6 +45,8 @@ test:
     - pip
   commands:
     - pip check
+    - kopf --help
+    # pytest tests too unstable due to performance checks
 
 about:
   home: https://github.com/nolar/kopf
