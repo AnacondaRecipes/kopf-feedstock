@@ -56,6 +56,8 @@ requirements:
 # Expected run duration different
 {% set tests_to_skip = tests_to_skip + "test_threadsafe_indeed_works" %}
 {% set tests_to_skip = tests_to_skip + " or test_queueing_is_threadsafe" %}
+# Trying to bind local address
+{% set tests_to_skip = tests_to_skip + " or test_liveness_for_just_status" %}
 
 test:
   source_files:
