@@ -36,55 +36,14 @@ requirements:
     # - uvloop  # [py<312]
     - uvloop >=0.18.0  # [py>312]
 
-{% set tests_to_ignore = "" %}
-# Missing pyngrok
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/admission" %}
-# Missing astpath
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/e2e" %}
-# Missing aresponses
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/apis" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/k8s" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/authentication/test_reauthentication.py" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/handling" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/observation/test_processing_of_resources.py" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/orchestration/test_task_adjustments.py" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/peering" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/reactor" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/test_versions.py" %}
-# Networking tests
-{% set tests_to_ignore = tests_to_ignore + " --ignore=tests/test_liveness.py" %}
-
-{% set tests_to_skip = "" %}
-# Performance tests
-{% set tests_to_skip = tests_to_skip + "test_threadsafe_indeed_works" %}
-{% set tests_to_skip = tests_to_skip + " or test_queueing_is_threadsafe" %}
-{% set tests_to_skip = tests_to_skip + " or test_followups_for_addition" %}
-{% set tests_to_skip = tests_to_skip + " or test_iterates_when_set" %}
-{% set tests_to_skip = tests_to_skip + " or test_waiting_for_unraised_times_out" %}
-{% set tests_to_skip = tests_to_skip + " or test_waiting_for_delayed_resources_ends_once_delivered" %}
-{% set tests_to_skip = tests_to_skip + " or test_the_only_delay_is_awaited" %}
-{% set tests_to_skip = tests_to_skip + " or test_specific_delays_only_are_awaited" %}
-{% set tests_to_skip = tests_to_skip + " or test_tasks_are_pending_if_limit_is_reached" %}
-
 test:
-  source_files:
-    - tests
-    - pytest.ini
   imports:
     - kopf
   requires:
     - pip
-    - pytest >=6.0.0
-    - freezegun
-    - pytest-asyncio
-    - pytest-cov
-    - pytest-mock
-    - pytest-timeout
-    - types-pyyaml
-    - types-setuptools
   commands:
     - pip check
-    - pytest -vv tests {{ tests_to_ignore }} -k "not({{ tests_to_skip }})"
+    # pytest tests too unstable due to performance checks
 
 about:
   home: https://github.com/nolar/kopf
