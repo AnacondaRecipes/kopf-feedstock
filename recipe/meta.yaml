@@ -43,6 +43,7 @@ test:
     - pip
   commands:
     - pip check
+    - kopf --help
     # pytest tests too unstable due to performance checks
 
 about:
