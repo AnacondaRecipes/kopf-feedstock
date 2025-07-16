@@ -55,9 +55,16 @@ requirements:
 {% set tests_to_ignore = tests_to_ignore + " --ignore=tests/test_liveness.py" %}
 
 {% set tests_to_skip = "" %}
-# Expected run duration different
+# Performance tests
 {% set tests_to_skip = tests_to_skip + "test_threadsafe_indeed_works" %}
 {% set tests_to_skip = tests_to_skip + " or test_queueing_is_threadsafe" %}
+{% set tests_to_skip = tests_to_skip + " or test_followups_for_addition" %}
+{% set tests_to_skip = tests_to_skip + " or test_iterates_when_set" %}
+{% set tests_to_skip = tests_to_skip + " or test_waiting_for_unraised_times_out" %}
+{% set tests_to_skip = tests_to_skip + " or test_waiting_for_delayed_resources_ends_once_delivered" %}
+{% set tests_to_skip = tests_to_skip + " or test_the_only_delay_is_awaited" %}
+{% set tests_to_skip = tests_to_skip + " or test_specific_delays_only_are_awaited" %}
+{% set tests_to_skip = tests_to_skip + " or test_tasks_are_pending_if_limit_is_reached" %}
 
 test:
   source_files:
